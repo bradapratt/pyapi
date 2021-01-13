@@ -1,5 +1,5 @@
 from flask import Flask
-## from python3 -m pip install Flask-Limiter
+# from python3 -m pip install Flask-Limiter
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -32,7 +32,7 @@ def fast():
     return "I inherit the default limits of 200 per day and 50 per hour."
 
 
-## limiter().exempt removes all limits on this API
+# limiter().exempt removes all limits on this API
 @app.route("/ping")
 @limiter.exempt
 def ping():
