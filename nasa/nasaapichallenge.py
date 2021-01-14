@@ -2,7 +2,7 @@
 
 import requests
 
-NASAAPI = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?"
+NASAAPI = "https://api.nasa.gov/mars-photos/api/v1/rovers"
 all_cams = ["FHAZ", "RHAZ", "MAST", "CHEMCAM", "NAVCAM"]
 
 
@@ -17,7 +17,7 @@ def main():
     # get rover info
     count = 0
     roverlist = []
-    for rover in requests.get("https://api.nasa.gov/mars-photos/api/v1/rovers?" + nasacreds).json()['rovers']:
+    for rover in requests.get(NASAAPI + "?" + nasacreds).json()['rovers']:
         roverlist.append((rover['name'].lower(), rover['max_sol']))
         count += rover['total_photos']
     print(f"There are {count} total photos!")
@@ -25,13 +25,13 @@ def main():
     # get just photo links
     for rover in roverlist:
         for sol in range(1, rover[1]):
-            for photo in requests.get("https://api.nasa.gov/mars-photos/api/v1/rovers/" + rover[0] + "/photos?sol=" + str(sol) + nasacreds).json()['photos']:
+            for photo in requests.get(NASAAPI + "/" + rover[0] + "/photos?sol=" + str(sol) + nasacreds).json()['photos']:
                 print(photo['img_src'])
 
     # get rover name & date too
     for rover in roverlist:
         for sol in range(1, rover[1]):
-            for photo in requests.get("https://api.nasa.gov/mars-photos/api/v1/rovers/" + rover[0] + "/photos?sol=" + str(sol) + nasacreds).json()['photos']:
+            for photo in requests.get(NASAAPI + "/" + rover[0] + "/photos?sol=" + str(sol) + nasacreds).json()['photos']:
                 print("ROVER: " + rover[0].capitalize())
                 print("DATE: " + photo['earth_date'])
                 print(photo['img_src'])
@@ -45,8 +45,7 @@ def main():
 
     for rover in roverlist:
         for sol in range(1, rover[1]):
-            for photo in requests.get(
-                    "https://api.nasa.gov/mars-photos/api/v1/rovers/" + rover[0] + "/photos?sol=" + str(
+            for photo in requests.get(NASAAPI + "" + rover[0] + "/photos?sol=" + str(
                             sol) + nasacreds).json()['photos']:
                 if photo['camera']['name'] == choice:
                     print("ROVER: " + rover[0].capitalize())
